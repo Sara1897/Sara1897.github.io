@@ -1,7 +1,8 @@
 # Sara1897.github.io
-Nous avons réalisé une carte en ligne, présentant une orthophotographie d’une résolution de 3.14 cm sur l’aéroport de Paris-le-Bourget. En complément, vous retrouverez un descriptif qui explique la méthode utilisée afin d’héberger les tuiles de l’orthophotographie ». 
+Nous avons réalisé une carte en ligne, présentant une orthophotographie d’une résolution de 3.14 cm sur l’aéroport de Paris-le-Bourget. En complément, vous retrouverez un descriptif qui explique la méthode utilisée afin d’héberger les tuiles de l’orthophotographie. 
 
 1) La création de tuile 
+
 Il a plusieurs manières de créer des tuiles à l’aide de QGIS. La plus facile, consiste à utiliser GDAL Tiles. Cet outil permet de créer un dossier contenant les tuiles, donc plusieurs images au format PNG dans une multitude de sous-dossier. Ces images devront être hébergés sur un serveur afin de pouvoir extraire le lien de ce serveur et l’intégrer à notre carte en ligne.
 
 Le site internet Maptiler est une plate-forme logicielle pour la création de cartes numériques. Elle propose la création de tuile et l’hébergement de tuile au format PNG enregistré dans un Géopackage. Mais elle propose aussi l’hébergement de tuile au format MB tile qui sont un format spécifique de tuile adapté au serveur de Maptiler. Etant donné la simplicité du process, nous avons décidé de créer des tuiles mbtile avec le logiciel QGIS. 
@@ -16,8 +17,10 @@ La taille du fichier MBTiles est de 479 624 Ko. Nous l’avons intégré à notr
 Nous avons ensuite ajouté un point de contrôle de la tuile afin de la sélectionner de la désélectionner comme bon nous semble. 
 
 2) La création d’un projet Github
+3
 Un site web GitHub se fait en créant un nouveau projet GitHub. Ce projet va contenir un ensemble de dossier, dont un contenant le lien html. 
 Le nom du projet sera notre nom d’utilisateur, c’est-à-dire Sara1897.github.io. Cela indique à Github que nous avons créez un projet spécial de page Web. Il saura alors qu'il faut transférer nos fichiers sur cette URL. 
+
 Nous mettons comme description celle-ci : 
 « Nous avons réalisé une carte en ligne, présentant une orthophotographie d’une résolution de 3.14 cm sur l’aéroport de Paris-le-Bourget. En complément, vous retrouverez un descriptif qui explique la méthode utilisée afin d’héberger les tuiles de l’orthophotographie ». 
 Nous avons créé un lien html sur Github juste en remplaçant l’onglet README.md par site_web.html et nous y avons copié coller le script de la carte en ligne crée. 
