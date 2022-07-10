@@ -1,0 +1,157 @@
+# Intégrer une orthophotographie sur une carte en ligne 
+Nous avons réalisé une carte en ligne, présentant une orthophotographie d’une résolution de 3.14 cm sur l’aéroport de Paris-le-Bourget. En complément, vous retrouverez un descriptif qui explique la méthode utilisée afin d’héberger les tuiles de l’orthophotographie sur un serveur. 
+
+La création de tuile 
+
+Il a plusieurs manières de créer des tuiles à l’aide de QGIS. La plus facile, consiste à utiliser GDAL Tiles. Cet outil permet de créer un dossier contenant les tuiles, donc plusieurs images au format PNG dans une multitude de sous-dossier. Ces images devront être hébergés sur un serveur afin de pouvoir extraire le lien de ce serveur et l’intégrer à notre carte en ligne.
+
+Le site internet Maptiler est une plate-forme logicielle pour la création de cartes numériques. Elle propose la création de tuile et l’hébergement de tuile au format PNG enregistré dans un Géopackage. Mais elle propose aussi l’hébergement de tuile au format MB tile qui sont un format spécifique de tuile adapté au serveur de Maptiler. Etant donné la simplicité du process, nous avons décidé de créer des tuiles MBtile avec le logiciel QGIS. 
+
+Les tuiles vont du zoom 12 à 20. Etant donné que nous avons une orthophotographie, le zoom a privilégié ne commence par par une vue « globe » mais par un zoom déjà prononcé de l’orthophographie. En effet, ce qui nous intéresse, c’est d’avoir la possibilité de zoomer au plus loin que ce nous propose l’orthophotographie en vision nette. Ensuite, nous avons pris une taille de tuile de 20 : cela permet de rendre le traitement moins long et le fichier moins lourd. 
+
+La taille du fichier MBTiles est de 46 680 Ko. Nous l’avons intégré à notre cloud. Il n’est possible d’héberger qu’un fichier de tuile sur le cloud de Maptiler avec la version gratuite, selon une limite de stockage de 100 MB. Maptiler fournit le lien pour ajouter les tuiles sur une carte Leaflet. Nous avons donc suivit le schéma classique d’ajout d’une tuile sur un script Leaflet, de cette façon : L.tileLayer('https://api.maptiler.com/tiles/3b88fd18-b707-41fa-a09b-614877ca1335/{z}/{x}/{y}.png?key=nuHM9zBF51hpgnx2PHDG',{
+        attribution: null,
+        crossOrigin: true
+      }).addTo(map);
+
+Nous avons ensuite ajouté un point de contrôle de la tuile afin de la sélectionner et de la désélectionner comme bon nous semble. 
+
+<head>
+<img src="https://img.icons8.com/cute-clipart/64/undefined/airplane-mode-on.png"style="position:absolute;top:15px;left:400px;width:50px;height:50px,iconSize: [30,30];">
+
+	<meta charset="utf-8" />
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	
+	<link rel="shortcut icon" type="image/x-icon" href="docs/images/favicon.ico" />
+
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css" integrity="sha512-xodZBNTC5n17Xt2atTPuE1HxjVMSvLVW9ocqUKLsCC5CXdbqCmblAshOMAS6/keqq/sMZMZ19scR4PsZChSR7A==" crossorigin=""/>
+
+    <script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js" integrity="sha512-XQoYMqMTK8LvdxXYG3nZ448hOEQiglfqkJs1NOQV44cWnUrBc8PkAOcXy20w0vlaXaVUearIOBhiXZ5V3ynxwA==" crossorigin=""></script>
+ <script src=″https://code.jquery.com/jquery-3.1.1.min.js″></script>
+ <div id="bandeau"> <FONT face="georgia"> <center> <h3> L'aéroport de Paris-Le Bourget </h3> </center> </FONT></div>
+<div id="map" class= "encadrer-un-contenu" style=" width: 900px; height: 500px;margin-left:320 ;
+margin-top: 15"></div>
+</head>
+
+<style>
+#bandeau {
+width:814;
+height:22px;
+background-color: #B8DDFF;
+margin-left: 380 ;
+margin-top: 20;
+}
+.encadrer-un-contenu{ border: 1px solid black; padding: 5px; }
+
+#map
+{
+margin-left: 200px;
+margin-top: 10;
+box-shadow: 7px 7px 7px grey;
+}
+.figure {
+  display: table;
+}
+body {
+color:black;
+background-color: white;
+background-image;
+border: 3px grey solid;
+}
+.figcaption {
+  display: table-caption;
+  caption-side: top;
+}
+.marge {
+margin-left: 150px;
+margin-top: 5px;
+}
+.marge2 {
+margin-left: 250px;
+margin-top: 0px;
+}
+.encadrer-un-contenu{ border: 2px solid black ; padding: 5px; }
+
+
+</style>
+
+<script>
+
+var map = L.map('map', {
+    	center: [48.9614 , 2.4372],
+    	zoom: 12,
+	});
+
+var OSM =  L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+	maxZoom: 20,
+  minZoom : 12,
+	attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+}).addTo(map);
+
+var BS = L.tileLayer('https://api.maptiler.com/tiles/satellite-mediumres-2018/{z}/{x}/{y}.jpg?key=dkb7LRFt1f5dvuKwSHhZ',{
+maxZoom: 20,
+  minZoom : 12,       
+attribution: null,
+        crossOrigin: true
+      })
+
+var ORTHO = L.tileLayer('https://api.maptiler.com/tiles/c794cc0a-cab7-4f85-bdab-036d9adbb387/{z}/{x}/{y}.png?key=dkb7LRFt1f5dvuKwSHhZ',{
+        attribution: null,
+        crossOrigin: true
+      }).addTo(map);
+
+var overlayMaps = {
+    "Orthophotographie de l'aéroport de Paris-Le Bourget": ORTHO
+};
+
+var baseMaps = {
+    "Fond OpenStreetMap": OSM,
+    "Fond Satellite": BS 
+};
+
+var layerControl = L.control.layers(baseMaps, overlayMaps).addTo(map);
+
+var Avion_icone = L.icon({iconUrl:"https://img.icons8.com/ios-glyphs/30/000000/airport.png", iconSize: [30,30] });
+
+var Popup_avion = L.marker([48.9678,2.4382], {icon: Avion_icone}).addTo(map).bindPopup("Aéroport de Paris-Le Bourget.");
+
+var fond_opaque = {
+"type": "FeatureCollection",
+"name": "rectangle",
+"crs": { "type": "name", "properties": { "name": "urn:ogc:def:crs:OGC:1.3:CRS84" } },
+"features": [
+{ "type": "Feature", "properties": { }, "geometry": { "type": "MultiPolygon", "coordinates": [ [ [ [ 2.090203273969092, 49.133098663594566 ], [ 2.679641514216685, 49.133098663594566 ], [ 2.682067185987251, 48.799164516513287 ], [ 2.090203273969092, 48.797547401999573 ], [ 2.090203273969092, 49.133098663594566 ] ], [ [ 2.473708812687905, 48.968171804224134 ], [ 2.473506582939597, 48.970337355571345 ], [ 2.47315661481688, 48.972485750965525 ], [ 2.472660406936986, 48.974607790647717 ], [ 2.472020084138235, 48.976694387718275 ], [ 2.471238388381156, 48.978736607048148 ], [ 2.470318667006989, 48.980725703540692 ], [ 2.469264858403855, 48.982653159579307 ], [ 2.468081475141977, 48.984510721501366 ], [ 2.466773584650159, 48.986290434941516 ], [ 2.465346787516278, 48.987984678893575 ], [ 2.463807193504707, 48.989586198344853 ], [ 2.462161395393367, 48.99108813534319 ], [ 2.460416440742436, 48.992484058363772 ], [ 2.458579801715622, 48.993767989849907 ], [ 2.456659343083203, 48.994934431809888 ], [ 2.454663288543877, 48.995978389360126 ], [ 2.452600185509622, 48.996895392114169 ], [ 2.450478868504363, 48.997681513325382 ], [ 2.448308421333187, 48.9983333867021 ], [ 2.446098138184096, 48.998848220822445 ], [ 2.44385748382886, 48.999223811087653 ], [ 2.441596053093423, 48.999458549162547 ], [ 2.439323529771372, 48.99955142986267 ], [ 2.437049645156459, 48.999502055458606 ], [ 2.434784136371697, 48.999310637379104 ], [ 2.432536704673509, 48.9989779953058 ], [ 2.43031697390946, 48.998505553663108 ], [ 2.42813444930746, 48.997895335518663 ], [ 2.425998476772921, 48.997149953920243 ], [ 2.423918202868159, 48.996272600706298 ], [ 2.421902535645402, 48.995267032838001 ], [ 2.419960106501149, 48.994137556311301 ], [ 2.418099233215203, 48.992889007718098 ], [ 2.416327884332659, 48.99152673353516 ], [ 2.414653645041378, 48.990056567229679 ], [ 2.413083684691038, 48.988484804279466 ], [ 2.411624726092881, 48.986818175214786 ], [ 2.410283016731611, 48.985063816797165 ], [ 2.409064302012695, 48.983229241458659 ], [ 2.407973800659659, 48.981322305132522 ], [ 2.407016182366715, 48.979351173612876 ], [ 2.406195547802408, 48.977324287587514 ], [ 2.40551541104993, 48.975250326493537 ], [ 2.40497868455927, 48.973138171350762 ], [ 2.404587666675662, 48.970996866731774 ], [ 2.404344031797714, 48.968835582031694 ], [ 2.404248823207376, 48.966663572203409 ], [ 2.404302448602448, 48.96449013812645 ], [ 2.404504678350758, 48.962324586779239 ], [ 2.404854646473474, 48.960176191385059 ], [ 2.405350854353368, 48.958054151702861 ], [ 2.405991177152119, 48.955967554632316 ], [ 2.406772872909198, 48.953925335302429 ], [ 2.407692594283366, 48.9519362388099 ], [ 2.4087464028865, 48.950008782771263 ], [ 2.409929786148377, 48.948151220849219 ], [ 2.411237676640195, 48.946371507409076 ], [ 2.412664473774076, 48.944677263457002 ], [ 2.414204067785647, 48.943075744005732 ], [ 2.415849865896988, 48.941573807007387 ], [ 2.417594820547918, 48.94017788398682 ], [ 2.419431459574732, 48.938893952500678 ], [ 2.421351918207151, 48.937727510540711 ], [ 2.423347972746476, 48.936683552990459 ], [ 2.425411075780732, 48.93576655023643 ], [ 2.427532392785991, 48.934980429025202 ], [ 2.429702839957167, 48.934328555648484 ], [ 2.431913123106259, 48.933813721528146 ], [ 2.434153777461495, 48.933438131262939 ], [ 2.436415208196932, 48.93320339318803 ], [ 2.438687731518982, 48.933110512487914 ], [ 2.440961616133896, 48.933159886891993 ], [ 2.443227124918658, 48.933351304971481 ], [ 2.445474556616845, 48.933683947044791 ], [ 2.447694287380894, 48.934156388687491 ], [ 2.449876811982895, 48.934766606831928 ], [ 2.452012784517433, 48.935511988430342 ], [ 2.454093058422195, 48.936389341644279 ], [ 2.456108725644952, 48.937394909512591 ], [ 2.458051154789205, 48.93852438603929 ], [ 2.459912028075151, 48.939772934632487 ], [ 2.461683376957694, 48.941135208815432 ], [ 2.463357616248976, 48.942605375120905 ], [ 2.464927576599317, 48.944177138071133 ], [ 2.466386535197473, 48.945843767135798 ], [ 2.467728244558743, 48.947598125553419 ], [ 2.46894695927766, 48.949432700891926 ], [ 2.470037460630695, 48.951339637218062 ], [ 2.470995078923639, 48.953310768737701 ], [ 2.471815713487946, 48.955337654763071 ], [ 2.472495850240425, 48.957411615857048 ], [ 2.473032576731084, 48.95952377099983 ], [ 2.473423594614692, 48.961665075618811 ], [ 2.473667229492641, 48.963826360318897 ], [ 2.473762438082979, 48.965998370147183 ], [ 2.473708812687905, 48.968171804224134 ] ] ] ] } }
+]
+}
+
+
+
+
+function polystyle(feature) {
+    return {
+    fillOpacity: 0.6,
+    fillColor: "white",
+        weight: 1,
+        opacity: 1,
+        color: 'black',  //Outline color
+    };
+}
+
+L.geoJson(fond_opaque,{style: polystyle} ).addTo(map);
+
+var southWest = L.latLng(48.7983560, 2.2114869),
+northEast = L.latLng(49.1339072, 2.6278938);
+var bounds = L.latLngBounds(southWest, northEast);
+
+
+map.setMaxBounds(bounds);
+map.on('drag', function() {
+    map.panInsideBounds(bounds, { animate: false });
+});
+ 
+
+
+bar = L.control.scale({position: 'bottomleft'});
+bar.addTo(map);
+
+</script>
