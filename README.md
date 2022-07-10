@@ -17,7 +17,7 @@ La taille du fichier MBTiles est de 479 624 Ko. Nous l’avons intégré à notr
 Nous avons ensuite ajouté un point de contrôle de la tuile afin de la sélectionner de la désélectionner comme bon nous semble. 
 
 2) La création d’un projet Github
-3
+
 Un site web GitHub se fait en créant un nouveau projet GitHub. Ce projet va contenir un ensemble de dossier, dont un contenant le lien html. 
 Le nom du projet sera notre nom d’utilisateur, c’est-à-dire Sara1897.github.io. Cela indique à Github que nous avons créez un projet spécial de page Web. Il saura alors qu'il faut transférer nos fichiers sur cette URL. 
 
