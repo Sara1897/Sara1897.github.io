@@ -1,4 +1,4 @@
-# Sara1897.github.io
+# Intégrer une orthophotographe sur une carte en ligne 
 Nous avons réalisé une carte en ligne, présentant une orthophotographie d’une résolution de 3.14 cm sur l’aéroport de Paris-le-Bourget. En complément, vous retrouverez un descriptif qui explique la méthode utilisée afin d’héberger les tuiles de l’orthophotographie sur un serveur. 
 
 La création de tuile 
