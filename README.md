@@ -14,5 +14,5 @@ La taille du fichier MBTiles est de 46 680 Ko. Nous l’avons intégré à notre
         crossOrigin: true
       }).addTo(map);
 
-Nous avons ensuite ajouté un point de contrôle de la tuile afin de la sélectionner de la désélectionner comme bon nous semble. 
+Nous avons ensuite ajouté un point de contrôle de la tuile afin de la sélectionner et de la désélectionner comme bon nous semble. 
 
