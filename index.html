@@ -65,13 +65,13 @@ var map = L.map('map', {
 	});
 
 var OSM =  L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-	maxZoom: 20,
+	maxZoom: 25,
   minZoom : 12,
 	attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
 }).addTo(map);
 
 var BS = L.tileLayer('https://api.maptiler.com/tiles/satellite-mediumres-2018/{z}/{x}/{y}.jpg?key=dkb7LRFt1f5dvuKwSHhZ',{
-maxZoom: 20,
+maxZoom: 25,
   minZoom : 12,       
 attribution: null,
         crossOrigin: true
@@ -79,7 +79,7 @@ attribution: null,
 
 var ORTHO = L.tileLayer('https://api.maptiler.com/tiles/c794cc0a-cab7-4f85-bdab-036d9adbb387/{z}/{x}/{y}.png?key=dkb7LRFt1f5dvuKwSHhZ',{
         attribution: null,
-	maxZoom: 22,
+	maxZoom: 25,
 	minZoom : 12,
         crossOrigin: true
       }).addTo(map);
